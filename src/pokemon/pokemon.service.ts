@@ -1,11 +1,29 @@
+import { Model } from 'mongoose';
 import { Injectable } from '@nestjs/common';
+import { InjectModel } from '@nestjs/mongoose';
+
+import { Pokemon } from './entities/pokemon.entity';
 import { CreatePokemonDto } from './dto/create-pokemon.dto';
 import { UpdatePokemonDto } from './dto/update-pokemon.dto';
 
 @Injectable()
 export class PokemonService {
-  create(createPokemonDto: CreatePokemonDto) {
-    return createPokemonDto;
+
+  constructor(
+    //! Nos permite inyectar el modelo de Mongoose para la entidad Pokemon, ya que la "entity" no es un provider 
+    @InjectModel(Pokemon.name)
+    private readonly pokemonModel: Model<Pokemon> 
+  ) {}
+
+  async create(createPokemonDto: CreatePokemonDto) {
+    //* Realizamos un ainsercion a la base de datos en MongoDB
+    const pokemon = await this.pokemonModel.create(createPokemonDto);
+
+    return {
+      status: 'success',
+      message: 'Pokemon created successfully',
+      pokemon,
+    };
   }
 
   findAll() {
