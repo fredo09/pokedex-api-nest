@@ -19,10 +19,10 @@ export class PokemonService {
     private readonly pokemonModel: Model<Pokemon> 
   ) {}
 
-  async create(createPokemonDto: CreatePokemonDto | CreatePokemonDto[]) {
+  async create(createPokemonDto: CreatePokemonDto) {
     //* Realizamos un ainsercion a la base de datos en MongoDB
     try {
-      const pokemon = await this.pokemonModel.insertMany(createPokemonDto);
+      const pokemon = await this.pokemonModel.create(createPokemonDto);
 
       return {
         status: 'success',
