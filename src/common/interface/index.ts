@@ -1,0 +1,1 @@
+export { HttpAdapterI } from './http-adapter.interface';
