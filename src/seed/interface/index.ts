@@ -1,0 +1,1 @@
+export { PokeAPIResponseI } from './poke-api-seed.interface';

@@ -1,26 +1,16 @@
+import axios, { AxiosInstance } from 'axios'
 import { Injectable } from '@nestjs/common';
-import { CreateSeedDto } from './dto/create-seed.dto';
-import { UpdateSeedDto } from './dto/update-seed.dto';
+import { PokeAPIResponseI } from './interface';
 
 @Injectable()
 export class SeedService {
-  create(createSeedDto: CreateSeedDto) {
-    return 'This action adds a new seed';
-  }
 
-  findAll() {
-    return `This action returns all seed`;
-  }
+  //! Forma provisional para realizar peticiones HTTP usando axios
+  private readonly axios: AxiosInstance = axios;
 
-  findOne(id: number) {
-    return `This action returns a #${id} seed`;
-  }
+  async executeSeed() {
+    const { data } = await this.axios.get<PokeAPIResponseI>('https://pokeapi.co/api/v2/pokemon?limit=151');
 
-  update(id: number, updateSeedDto: UpdateSeedDto) {
-    return `This action updates a #${id} seed`;
-  }
-
-  remove(id: number) {
-    return `This action removes a #${id} seed`;
+    return data?.results;
   }
 }
