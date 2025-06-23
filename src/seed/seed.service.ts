@@ -1,23 +1,29 @@
 import axios, { AxiosInstance } from 'axios'
 import { Injectable } from '@nestjs/common';
 import { PokeAPIResponseI } from './interface';
+import { PokemonService } from '../pokemon/pokemon.service';
 
 @Injectable()
 export class SeedService {
   //! Forma provisional para realizar peticiones HTTP usando axios
   private readonly axios: AxiosInstance = axios;
 
+  constructor(private readonly pokemonService: PokemonService) {}
+
   async executeSeed() {
-    const { data } = await this.axios.get<PokeAPIResponseI>('https://pokeapi.co/api/v2/pokemon?limit=1');
+    const { data } = await this.axios.get<PokeAPIResponseI>('https://pokeapi.co/api/v2/pokemon?limit=10');
 
-    data?.results.forEach(({name, url}) => {
+    const dataTransformed = data?.results.map(({name, url}) => {
       const pokemonId: number = +url.split('/').slice(-2, -1)[0];
-      console.log("🚀 ~ SeedService ~ data?.results.forEach ~ pokemonId:", {
-        name,
-        numero_pokemon: pokemonId,
-      })
-    })
+      return {
+        pokemon_number: pokemonId,
+        name
+      }
+    });
 
-    return data?.results;
+    // * Insertamos los pokemons en la base de datos */
+    await this.pokemonService.create(dataTransformed);
+
+    return `Se han insertado ${dataTransformed.length} pokemons`;
   }
 }
