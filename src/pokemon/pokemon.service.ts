@@ -4,11 +4,13 @@ import {
   BadRequestException, 
   Injectable, 
   InternalServerErrorException, 
-  NotFoundException} from '@nestjs/common';
+  NotFoundException,
+  Query} from '@nestjs/common';
 
 import { Pokemon } from './entities/pokemon.entity';
 import { CreatePokemonDto } from './dto/create-pokemon.dto';
 import { UpdatePokemonDto } from './dto/update-pokemon.dto';
+import { PaginationDto } from 'src/common/dto/pagination.dto';
 
 @Injectable()
 export class PokemonService {
@@ -43,11 +45,21 @@ export class PokemonService {
 
   /**
    * @description - Busca todos los pokemons en la base de datos
-   * @returns {String} - Retorna un mensaje indicando que se han encontrado todos los pokemons
+   * @returns {Object} - Retorna un mensaje indicando que se han encontrado todos los pokemons
    * @throws {InternalServerErrorException} - Si ocurre un error al buscar los pok
    */
-  findAll() {
-    return `This action returns all pokemon`;
+  async findAll( { limit = 10, offset= 0 }: PaginationDto  ) {
+    const allPokemon = await this.pokemonModel
+      .find().limit(limit).skip(offset)
+      .sort({ pokemon_number: 1 }).select('-__v');
+
+    // return {
+    //   status: 'success',
+    //   message: 'All pokemons found successfully',
+    //   pokemons: allPokemon,
+    //   total: allPokemon.length,
+    // };
+    return allPokemon;
   }
 
   /**
