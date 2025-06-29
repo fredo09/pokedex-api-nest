@@ -8,6 +8,10 @@ async function bootstrap() {
   app.useGlobalPipes(new ValidationPipe({
     whitelist: true,
     forbidNonWhitelisted: true,
+    transform: true, // Transforma los datos entrantes a los tipos definidos en los DTOs
+    transformOptions: {
+      enableImplicitConversion: true, // Permite la conversión implícita de tipos
+    },
   }));
 
   //! Configurar el prefijo global para las rutas de la API ejemplo: /api/v2
