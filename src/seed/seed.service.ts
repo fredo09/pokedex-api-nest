@@ -17,6 +17,14 @@ export class SeedService {
     private readonly axiosAdapter: AxiosAdapter
   ) {}
 
+  /**
+   * @description - Este metodo se encarga de realizar el seed de los pokemons en la base de datos.
+   * Se conecta a la PokeAPI para obtener los primeros 151 pokemons y los inserta en la base de datos.
+   * Primero elimina los pokemons existentes en la base de datos, luego realiza una peticion a la PokeAPI para obtener los datos
+   * de los pokemons, y finalmente inserta los pokemons en la base de datos 
+   * @returns {Promise<string>} - Retorna un mensaje indicando que se ha realizado el seed de los pokemons
+   * @throws {Error} - Si ocurre un error al realizar el seed de los pokemons
+   */
   async executeSeed() {
     //! Constante para insertar los pokemons en la base de datos forma uno
     // const arrayPromiseInsertPokemon: Promise<any>[] = [];

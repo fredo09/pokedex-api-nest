@@ -19,6 +19,13 @@ export class PokemonService {
     private readonly pokemonModel: Model<Pokemon> 
   ) {}
 
+  /**
+   * @description - Crea un nuevo pokemon en la base de datos
+   * @param createPokemonDto - Objeto que contiene los datos del pokemon a crear
+   * @throws {BadRequestException} - Si el pokemon ya existe en la base de datos
+   * @throws {InternalServerErrorException} - Si ocurre un error al crear el pokemon
+   * @returns {Object} - Retorna un objeto con el estado y mensaje de la creacion del pokemon
+   */
   async create(createPokemonDto: CreatePokemonDto) {
     //* Realizamos un ainsercion a la base de datos en MongoDB
     try {
@@ -34,10 +41,21 @@ export class PokemonService {
     }
   }
 
+  /**
+   * @description - Busca todos los pokemons en la base de datos
+   * @returns {String} - Retorna un mensaje indicando que se han encontrado todos los pokemons
+   * @throws {InternalServerErrorException} - Si ocurre un error al buscar los pok
+   */
   findAll() {
     return `This action returns all pokemon`;
   }
 
+  /**
+   * @description - Busca un pokemon en la base de datos por su numero, id o nombre
+   * @param term {String} - Puede ser un numero, un id de mongo o el nombre del pokemon
+   * @returns {Object} - Retorna un pokemon encontrado en la base de datos
+   * @throws {NotFoundException} - Si no se encuentra el pokemon en la base
+   */
   async findOne(term: string) {
     let pokemon: Pokemon | null = null;
 
@@ -61,6 +79,15 @@ export class PokemonService {
     return pokemon;
   }
 
+  /**
+   * @description - Actualiza un pokemon en la base de datos por su numero, id o nombre
+   * @param term {String} - Puede ser un numero, un id de mongo o el nombre del pokemon
+   * @param updatePokemonDto {UpdatePokemonDto} - Objeto con los datos a actualizar del pokemon
+   * @returns {Object} - Retorna el pokemon actualizado
+   * @throws {NotFoundException} - Si no se encuentra el pokemon en la base
+   * @throws {BadRequestException} - Si el nombre del pokemon ya existe en la base de datos
+   * @throws {InternalServerErrorException} - Si ocurre un error al actualizar el pokemon
+   */
   async update(term: string, updatePokemonDto: UpdatePokemonDto) {
     const pokemon = await this.findOne(term);
 
@@ -77,6 +104,12 @@ export class PokemonService {
     }
   }
 
+  /**
+   * @description - Elimina un pokemon de la base de datos por su id
+   * @param id {string} - Id del pokemon a eliminar
+   * @returns {Object} - Retorna un objeto con el estado y mensaje de la eliminacion
+   * @throws {BadRequestException} - Si no se encuentra el pokemon en la base
+   */
   async remove(id: string) {
     // const pokemon = await this.findOne(id);
     // await pokemon.deleteOne();
@@ -91,6 +124,13 @@ export class PokemonService {
     };
   }
 
+  /**
+   * @description - Maneja las excepciones personalizadas de la base de datos
+   * @param error {any} - Error thrown by the database
+   * @throws {BadRequestException} - Si el pokemon ya existe en la base de datos
+   * @throws {InternalServerErrorException} - Si ocurre un error al crear el pokemon
+   * @private
+   */
   private _handleCustomExceptions(error: any) {
     if ( error.code === 11000) {
       throw new BadRequestException(`pokemon in db already exists ${JSON.stringify(error.keyValue)}`);
