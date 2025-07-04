@@ -1,22 +1,26 @@
 import { join } from 'path';
 import { Module } from '@nestjs/common';
-import { ServeStaticModule } from '@nestjs/serve-static';
-import { PokemonModule } from './pokemon/pokemon.module';
-import { MongooseModule } from '@nestjs/mongoose';
-import { CommonModule } from './common/common.module';
-import { SeedModule } from './seed/seed.module';
 import { ConfigModule } from '@nestjs/config';
+import { MongooseModule } from '@nestjs/mongoose';
+import { ServeStaticModule } from '@nestjs/serve-static';
+
+import { appConfigEnviroment } from './config/app.config';
+import { SeedModule } from './seed/seed.module';
+import { CommonModule } from './common/common.module';
+import { PokemonModule } from './pokemon/pokemon.module';
 
 @Module({
   imports: [
+    //! Confirgurar dependencia "config" PARA PODER LEER VARIABLES DE ENTORNO
+    //! https://docs.nestjs.com/techniques/configuration
+    ConfigModule.forRoot({
+      load: [appConfigEnviroment] //* Cargar la configuracion del archivo app.config.ts "Environment"
+    }),
+    
     //! Agregar contenido estatico
     ServeStaticModule.forRoot({
       rootPath: join(__dirname,'..', 'public')
     }),
-
-    //! Confirgurar dependencia "config" PARA PODER LEER VARIABLES DE ENTORNO
-    //! https://docs.nestjs.com/techniques/configuration
-    ConfigModule.forRoot(),
 
     //! Importar el modulo de mongoose
     MongooseModule.forRoot(process.env.MONGODB_URL || ''),
