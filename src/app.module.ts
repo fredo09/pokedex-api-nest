@@ -29,8 +29,4 @@ import { PokemonModule } from './pokemon/pokemon.module';
     SeedModule
   ],
 })
-export class AppModule {
-  constructor() {
-    console.log("🚀 ~ contructor:", process.env);
-  }
-}
+export class AppModule {}

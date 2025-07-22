@@ -11,15 +11,25 @@ import { Pokemon } from './entities/pokemon.entity';
 import { CreatePokemonDto } from './dto/create-pokemon.dto';
 import { UpdatePokemonDto } from './dto/update-pokemon.dto';
 import { PaginationDto } from 'src/common/dto/pagination.dto';
+import { ConfigService } from '@nestjs/config';
 
 @Injectable()
 export class PokemonService {
 
+  /**
+   * @description - Limite por defecto para la paginacion de pokemons
+   * @type {number}
+   */
+  private defaultLimit: number;
+
   constructor(
     //! Nos permite inyectar el modelo de Mongoose para la entidad Pokemon, ya que la "entity" no es un provider 
     @InjectModel(Pokemon.name)
-    private readonly pokemonModel: Model<Pokemon> 
-  ) {}
+    private readonly pokemonModel: Model<Pokemon>,
+    private readonly configService: ConfigService
+  ) {
+    this.defaultLimit = this.configService.get<number>('defaultLimit') || 10;
+  }
 
   /**
    * @description - Crea un nuevo pokemon en la base de datos
@@ -48,10 +58,10 @@ export class PokemonService {
    * @returns {Object} - Retorna un mensaje indicando que se han encontrado todos los pokemons
    * @throws {InternalServerErrorException} - Si ocurre un error al buscar los pok
    */
-  async findAll( { limit = 10, offset= 0 }: PaginationDto  ) {
+  async findAll( { limit = this.defaultLimit, offset= 0 }: PaginationDto  ) {
     console.log("🚀 ~ enviroment content:");
     const allPokemon = await this.pokemonModel
-      .find().limit(limit).skip(offset)
+      .find().limit( limit ).skip(offset)
       .sort({ pokemon_number: 1 }).select('-__v');
 
     // return {
