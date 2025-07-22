@@ -26,7 +26,9 @@ import { joiValidationSchema } from './config/joi.schema.validation';
     }),
 
     //! Importar el modulo de mongoose
-    MongooseModule.forRoot(process.env.MONGODB_URL || ''),
+    MongooseModule.forRoot(process.env.MONGODB_URL || '', {
+      dbName: 'pokemon-api-nest-db'
+    }),
     PokemonModule,
     CommonModule,
     SeedModule
