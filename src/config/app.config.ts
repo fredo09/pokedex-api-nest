@@ -7,6 +7,6 @@ export const appConfigEnviroment = () => ({
 	enviroment: process.env.NODE_env || 'DEVELOPMENT',
 	mongodb_url: process.env.MONGO_URL || '',
 	port: process.env.PORT || 3002,
-	defaultLimit: process.env.DEFAULT_LIMIT || 7,
+	defaultLimit: process.env.DEFAULT_LIMIT || 5,
 	defaultOffset: process.env.DEFAULT_OFFSET || 0,
 });

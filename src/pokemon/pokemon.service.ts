@@ -28,7 +28,7 @@ export class PokemonService {
     private readonly pokemonModel: Model<Pokemon>,
     private readonly configService: ConfigService
   ) {
-    this.defaultLimit = this.configService.get<number>('defaultLimit') || 10;
+    this.defaultLimit = this.configService.get<number>('defaultLimit') || 5;
   }
 
   /**
