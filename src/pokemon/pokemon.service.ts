@@ -59,7 +59,6 @@ export class PokemonService {
    * @throws {InternalServerErrorException} - Si ocurre un error al buscar los pok
    */
   async findAll( { limit = this.defaultLimit, offset= 0 }: PaginationDto  ) {
-    console.log("🚀 ~ enviroment content:");
     const allPokemon = await this.pokemonModel
       .find().limit( limit ).skip(offset)
       .sort({ pokemon_number: 1 }).select('-__v');
