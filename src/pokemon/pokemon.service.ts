@@ -15,9 +15,8 @@ import { ConfigService } from '@nestjs/config';
 
 @Injectable()
 export class PokemonService {
-
   /**
-   * @description - Limite por defecto para la paginacion de pokemons
+   * Limite por defecto para la paginacion de pokemons
    * @type {number}
    */
   private defaultLimit: number;
