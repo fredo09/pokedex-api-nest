@@ -1,0 +1,7 @@
+# archivos que no iran en la imagen
+dist/
+node_modules/
+.gitignore
+
+#git
+.git/

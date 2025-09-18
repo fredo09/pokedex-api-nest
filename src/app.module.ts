@@ -25,8 +25,8 @@ import { joiValidationSchema } from './config/joi.schema.validation';
       rootPath: join(__dirname,'..', 'public')
     }),
 
-    //! Importar el modulo de mongoose
-    MongooseModule.forRoot(process.env.MONGODB_URL || '', {
+    //! Importar el modulo de mongoosea
+    MongooseModule.forRoot(process.env.MONGO_URL || '', {
       dbName: 'pokemon-api-nest-db'
     }),
     PokemonModule,

@@ -6,6 +6,7 @@
 
 # environment variables
 .env
+.env.prod
 
 # Logs
 logs
